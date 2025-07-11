@@ -157,44 +157,7 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* Footer */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.5 }}
-            className="text-center mt-32 relative"
-          >
-            <div className="bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-cyan-900/20 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/20">
-              <p className="text-gray-300 text-lg mb-2">
-                🌟 Webnime aggregates data from MyAnimeList, AniList, and Kitsu 🌟
-              </p>
-              <p className="text-gray-400 text-sm">
-                Made with ❤️ for anime lovers • Please support official distributors
-              </p>
-
-              {/* Animated Footer Elements */}
-              <div className="flex justify-center items-center gap-8 mt-6">
-                {["🎭", "🎪", "🎨", "🎵", "🎬"].map((emoji, index) => (
-                  <motion.div
-                    key={emoji}
-                    animate={{
-                      y: [0, -5, 0],
-                      scale: [1, 1.1, 1],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Number.POSITIVE_INFINITY,
-                      delay: index * 0.2,
-                    }}
-                    className="text-2xl"
-                  >
-                    {emoji}
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
+                </div>
       </div>
     </div>
   )
