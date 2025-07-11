@@ -9,9 +9,9 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { AnimeGrid } from "@/components/anime-grid"
 import { SearchResult } from "../../lib/types"
-import { AnimeAggregator } from "../../lib/api/aggregator"
 import { useToast } from "../../hooks/use-toast"
 import { useAnimeStore } from "../../lib/store"
+import { AnimeAggregator } from "../../lib/api/aggregator"
 
 
 export function SearchWithSuggestions() {
@@ -115,27 +115,27 @@ export function SearchWithSuggestions() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Search Form with Suggestions */}
       <motion.div
         ref={searchRef}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="max-w-4xl mx-auto relative"
+        className="w-full max-w-4xl mx-auto relative px-4 sm:px-0"
       >
-        <Card className="p-8 bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-cyan-900/20 border-2 border-purple-500/30 backdrop-blur-xl shadow-2xl">
+        <Card className="p-4 sm:p-6 lg:p-8 bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-cyan-900/20 border-2 border-purple-500/30 backdrop-blur-xl shadow-2xl">
           <motion.div
-            className="flex items-center gap-3 mb-6"
+            className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}
           >
-            <Sparkles className="w-6 h-6 text-yellow-400" />
-            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400">
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 flex-shrink-0" />
+            <h2 className="text-center text-base sm:text-xl lg:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400">
               Discover Your Next Anime Adventure!
             </h2>
-            <Sparkles className="w-6 h-6 text-yellow-400" />
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 flex-shrink-0" />
           </motion.div>
 
           <form
@@ -143,16 +143,16 @@ export function SearchWithSuggestions() {
               e.preventDefault()
               handleSearch()
             }}
-            className="flex gap-4"
+            className="space-y-3 sm:space-y-0 sm:flex sm:gap-4"
           >
             <div className="flex-1 relative">
               <Input
                 type="text"
-                placeholder="🔍 Search for anime (e.g., Attack on Titan, Naruto, One Piece)..."
+                placeholder="🔍 Search anime (e.g., Attack on Titan)..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => query.length >= 2 && setShowSuggestions(true)}
-                className="bg-gray-800/50 border-2 border-purple-400/50 text-white placeholder-gray-300 focus:border-pink-400 pr-12 h-14 text-lg rounded-xl"
+                className="w-full bg-gray-800/50 border-2 border-purple-400/50 text-white placeholder-gray-300 focus:border-pink-400 pr-10 h-12 sm:h-14 text-sm sm:text-base lg:text-lg rounded-xl"
                 disabled={isSearching}
               />
               {query && (
@@ -161,30 +161,45 @@ export function SearchWithSuggestions() {
                   size="icon"
                   variant="ghost"
                   onClick={() => setQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 text-gray-400 hover:text-white rounded-full"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 text-gray-400 hover:text-white rounded-full"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4 sm:w-5 sm:h-5" />
                 </Button>
               )}
             </div>
-            <Button
-              type="submit"
-              disabled={isSearching}
-              className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 h-14 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              {isSearching ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : <Search className="w-5 h-5 mr-2" />}
-              {isSearching ? "Searching..." : "Search"}
-            </Button>
-            {searchResults.length > 0 && (
+
+            <div className="flex gap-2 sm:gap-3">
               <Button
-                type="button"
-                variant="outline"
-                onClick={handleClearSearch}
-                className="border-2 border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/10 bg-transparent h-14 px-6 rounded-xl"
+                type="submit"
+                disabled={isSearching}
+                className="flex-1 sm:flex-none bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-6 sm:px-8 h-12 sm:h-14 text-sm sm:text-base lg:text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                Clear
+                {isSearching ? (
+                  <>
+                    <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin mr-2" />
+                    <span className="hidden xs:inline">Searching...</span>
+                    <span className="xs:hidden">...</span>
+                  </>
+                ) : (
+                  <>
+                    <Search className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                    <span>Search</span>
+                  </>
+                )}
               </Button>
-            )}
+
+              {searchResults.length > 0 && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleClearSearch}
+                  className="border-2 border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/10 bg-transparent h-12 sm:h-14 px-4 sm:px-6 rounded-xl text-sm sm:text-base"
+                >
+                  <X className="w-4 h-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Clear</span>
+                </Button>
+              )}
+            </div>
           </form>
         </Card>
 
@@ -196,16 +211,16 @@ export function SearchWithSuggestions() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-full left-0 right-0 z-50 mt-4"
+              className="absolute top-full left-4 right-4 sm:left-0 sm:right-0 z-50 mt-2 sm:mt-4"
             >
               <Card className="bg-gray-900/95 border-2 border-purple-500/30 backdrop-blur-xl overflow-hidden shadow-2xl">
                 {isLoadingSuggestions ? (
-                  <div className="p-6 flex items-center justify-center">
-                    <Loader2 className="w-6 h-6 animate-spin text-purple-400 mr-3" />
-                    <span className="text-gray-300 text-lg">Finding amazing anime...</span>
+                  <div className="p-4 sm:p-6 flex items-center justify-center">
+                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin text-purple-400 mr-3" />
+                    <span className="text-gray-300 text-sm sm:text-base lg:text-lg">Finding amazing anime...</span>
                   </div>
                 ) : (
-                  <div className="max-h-96 overflow-y-auto">
+                  <div className="max-h-80 sm:max-h-96 overflow-y-auto">
                     {suggestions.map((suggestion, index) => (
                       <motion.div
                         key={suggestion.id}
@@ -213,23 +228,25 @@ export function SearchWithSuggestions() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.2, delay: index * 0.05 }}
                         onClick={() => handleSuggestionClick(suggestion)}
-                        className="p-4 hover:bg-gradient-to-r hover:from-purple-800/30 hover:to-pink-800/30 cursor-pointer border-b border-gray-700/30 last:border-b-0 transition-all duration-300"
+                        className="p-3 sm:p-4 hover:bg-gradient-to-r hover:from-purple-800/30 hover:to-pink-800/30 cursor-pointer border-b border-gray-700/30 last:border-b-0 transition-all duration-300"
                       >
-                        <div className="flex items-center gap-4">
-                          <div className="relative">
+                        <div className="flex items-center gap-3 sm:gap-4">
+                          <div className="relative flex-shrink-0">
                             <img
                               src={suggestion.poster || "/placeholder.svg?height=60&width=40"}
                               alt={suggestion.title}
-                              className="w-12 h-16 object-cover rounded-lg shadow-lg"
+                              className="w-10 h-14 sm:w-12 sm:h-16 object-cover rounded-lg shadow-lg"
                             />
-                            <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full animate-pulse" />
+                            <div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full animate-pulse" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-white font-semibold truncate text-lg">{suggestion.title}</h4>
+                            <h4 className="text-white font-semibold truncate text-sm sm:text-base lg:text-lg">
+                              {suggestion.title}
+                            </h4>
                             {suggestion.englishTitle && suggestion.englishTitle !== suggestion.title && (
-                              <p className="text-gray-400 text-sm truncate">{suggestion.englishTitle}</p>
+                              <p className="text-gray-400 text-xs sm:text-sm truncate">{suggestion.englishTitle}</p>
                             )}
-                            <div className="flex items-center gap-2 mt-2">
+                            <div className="flex items-center gap-1 sm:gap-2 mt-1 sm:mt-2 flex-wrap">
                               {suggestion.year && (
                                 <Badge variant="outline" className="border-cyan-400/50 text-cyan-300 text-xs">
                                   {suggestion.year}
@@ -253,7 +270,7 @@ export function SearchWithSuggestions() {
                               </Badge>
                             </div>
                           </div>
-                          <TrendingUp className="w-5 h-5 text-pink-400" />
+                          <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-pink-400 flex-shrink-0" />
                         </div>
                       </motion.div>
                     ))}
@@ -271,16 +288,17 @@ export function SearchWithSuggestions() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
+          className="px-4 sm:px-0"
         >
-          <div className="flex items-center gap-4 mb-8">
-            <Search className="w-8 h-8 text-pink-400" />
-            <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <Search className="w-6 h-6 sm:w-8 sm:h-8 text-pink-400" />
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400">
               Search Results
             </h2>
-            <Badge className="bg-gradient-to-r from-pink-500/20 to-purple-500/20 text-pink-300 text-lg px-4 py-2">
+            <Badge className="bg-gradient-to-r from-pink-500/20 to-purple-500/20 text-pink-300 text-sm sm:text-base lg:text-lg px-3 sm:px-4 py-1 sm:py-2">
               {searchResults.length} found
             </Badge>
-            <Sparkles className="w-6 h-6 text-yellow-400 animate-pulse" />
+            <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 animate-pulse" />
           </div>
           <AnimeGrid anime={searchResults} />
         </motion.div>
